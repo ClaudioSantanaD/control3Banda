@@ -5,10 +5,21 @@ require('dotenv').config()
 require('./bd/dbConect')
 
 app.get("/", (req, res) => {
-    res.send("estas en /")
+    res.json({
+        message: "Ruta rais mishangre"
+    })
 })
 
-app.use("/auth", require('./routes/auth'))
+//app.use(express.json())
+/*app.use(
+    express.urlencoded({
+        extended:true,
+    })
+)*/
+
+app.use("/api/user", require('./routes/auth'))
+app.use("/bandas/", require('./routes/banda'))
+
 
 const PORT = process.env.PORT || 5000
 

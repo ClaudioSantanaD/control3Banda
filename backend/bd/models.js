@@ -1,58 +1,28 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const { Schema } = mongoose
-
+ 
 const userSchema = new Schema({
-    userName:{ 
-        type: String, 
-        lowercase: true, 
-        required: true },
 
-    email:{
-        type: String, 
-        lowercase: true, 
-        required: true,
-        unique: true,
-        index: {unique: true} },
-
-    password:{
-        type: String,
-        requiered: true },
-
-    myConcerts:{
-        type: [bandaShema],
-        default: undefined }
+    username:{ type: String, lowercase: true, required: true, unique: true },
+    name:{type: String},
+    email:{ type: String, lowercase: true, required: true, unique: true},
+    password:{type: String, required: true},
+    myConcerts:[{type: Schema.Types.ObjectId, ref:"BandaEnConcierto", default: undefined}]
 })
 
-const bandaShema = new Schema({
-
-    bandaName:{
-        type: String,
-        required: true },
-
-    fechaHora:{
-        type: Date,
-        required:true,
-        unique: true },
-
+const bandaConcertShema = new Schema({
+    bandaName:{type: String, required: true},
+    fechaHora:{type: Date, required: true, unique: true },
+    ciudad:{type: String, lowercase:true, required: true},
     detalle:{
-        productoraEvento:{
-            type: String,
-            required: true },
-        
-        descrEvento:{
-            type: String,
-            required: true },
 
-         lugar:{
-            type: String,
-            lowercase: true,
-            required: true },
+        productoraEvento:{type: String, required: true },
+        descriptEvento:{type: String, required: true },
+        lugar:{type: String, lowercase: true, required: true },
+        auspiciadores:{type: [String], default: undefined}
 
-        auspiciadores:{
-            type: Array },
-
-        required: true },
+       }
 
 })
 
@@ -73,7 +43,11 @@ userSchema.pre('save', async function(next){
     }
 })
 
-const userMong = mongoose.model('User', userSchema)
-const bandaMong = mongoose.model('BandaEnConcierto', bandaShema)
+userSchema.methods.comparePass = async function(givenPass){
+    return await bcrypt.compare(givenPass, this.password)
+}
 
-module.exports = {userMong,bandaMong}
+const userMong = mongoose.model('User', userSchema)
+const bandaConcertMong = mongoose.model('BandaEnConcierto', bandaConcertShema)
+
+module.exports = userMong, bandaConcertMong
