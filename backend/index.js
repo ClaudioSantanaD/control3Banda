@@ -10,15 +10,15 @@ app.get("/", (req, res) => {
     })
 })
 
-//app.use(express.json())
-/*app.use(
+app.use(express.json())
+app.use(
     express.urlencoded({
         extended:true,
     })
-)*/
+)
 
-app.use("/api/user", require('./routes/auth'))
-app.use("/bandas/", require('./routes/banda'))
+app.use("/user", require('./routes/auth'))
+app.use("/bandas", require('./routes/banda'))
 
 
 const PORT = process.env.PORT || 5000

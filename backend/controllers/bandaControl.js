@@ -1,9 +1,10 @@
-const bandaConcertMong = require('../bd/models.js')
+const bandaConcertMong = require('../bd/bandaModel.js')
 
-const findAllConcerts = async(req,res) =>{
+const findCityConcerts = async(res) =>{
     try{
 
-        res.json(await bandaConcertMong.find())
+        const cities = await bandaConcertMong.find().distinct("ciudad")
+        res.json(cities)
 
     } catch(error){
         res.status(400).json({message:"ERROR"})
@@ -13,10 +14,12 @@ const findAllConcerts = async(req,res) =>{
 
 const findByCity = async(req, res) => {
     
-    const{ciudad} = req.body
+    console.log(req.body)
+
+    const {ciudad} = req.body
     try{
 
-        const cityConcerts = await bandaConcertMong.findOne({ciudad:ciudad})
+        const cityConcerts = await bandaConcertMong.find({ciudad:ciudad}).sort({fechaHora:0})
         res.json(cityConcerts)
 
     } catch(error){
@@ -25,4 +28,4 @@ const findByCity = async(req, res) => {
     }
 }
 
-module.exports = {findAllConcerts, findByCity}
+module.exports = {findCityConcerts, findByCity}

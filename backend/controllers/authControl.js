@@ -1,5 +1,5 @@
-const userMong = require('../bd/models.js')
-const bandaConcertMong = require('../bd/models.js')
+const userMong = require('../bd/userModel.js')
+const bandaConcertMong = require('../bd/bandaModel.js')
 const {validationResult} = require('express-validator')
 const jwt = require('jsonwebtoken')
 
@@ -68,13 +68,12 @@ const loginUser = async(req, res) => {
 }
 
 const findUserConcert = async(req,res) => {
-    const {username} = req.body
 
     try{
-        const user = userMong.findOne({username})
+        const user = await userMong.findOne({username:req.user.username})
         if(!user) res.status(400).json({message:'No existe este username'})
 
-        const userConcerts = await bandaConcertMong.find({ '_id': { $in: user.myConcerts } })
+        const userConcerts = await bandaConcertMong.find({ '_id': { $in: user.myConcerts } }).sort({fechaHora:0})
         res.json(userConcerts)
 
     }catch(error){
@@ -85,20 +84,22 @@ const findUserConcert = async(req,res) => {
 }
 
 const addConcertToUser = async(req,res) => {
-    const {username, bandaName, fechaHora} = req.body
+    const {bandaName, fechaHora} = req.body
 
     try{
 
-        concert = await bandaConcertMong.findOne({bandaName:bandaName, fechaHora:fechaHora})
+        concert = await bandaConcertMong.findOne({bandaName, fechaHora})
         if(!concert) res.status(400).json({message:'No se encuentra un evento con los datos dados'})
 
-        const user = await userMong.findOneAndUpdate({username:username}, {$push: {myConcerts:concert._id}})
+        //console.log(concert._id)
+
+        const user = await userMong.findOneAndUpdate({username:req.user.username}, {$addToSet: {myConcerts:concert._id}})
         if(!user) res.status(400).json({message:'No existe este username'})
 
-        res.json(user.myConcerts)
+        res.json({message: "Concierto añadido a tus favoritos :)"})
 
     }catch(error){
-        res.status(400).json(error)
+        //res.status(400).json(error)
         console.log(error)
     }
 

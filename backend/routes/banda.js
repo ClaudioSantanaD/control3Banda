@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const {findAllConcerts, findByCity} = require('../controllers/bandaControl')
+const {findCityConcerts, findByCity} = require('../controllers/bandaControl')
 
-router.get("/allConcerts", findAllConcerts)
-router.get("concertByCity", findAllConcerts)
+router.get("/cityWithConcerts", findCityConcerts)
+router.get("/concertsByCity", findByCity)
 
 module.exports = router

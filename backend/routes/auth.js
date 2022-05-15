@@ -16,6 +16,6 @@ router.post("/register",
     registerUser)
 
 router.get("/getMyConcerts", verifyToken, findUserConcert)
-router.put("/addFavoriteConcert", verifyToken, addConcertToUser)
+router.put("/addFavConcert", verifyToken, addConcertToUser)
 
 module.exports = router;

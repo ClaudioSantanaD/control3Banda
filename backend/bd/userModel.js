@@ -11,21 +11,6 @@ const userSchema = new Schema({
     myConcerts:[{type: Schema.Types.ObjectId, ref:"BandaEnConcierto", default: undefined}]
 })
 
-const bandaConcertShema = new Schema({
-    bandaName:{type: String, required: true},
-    fechaHora:{type: Date, required: true, unique: true },
-    ciudad:{type: String, lowercase:true, required: true},
-    detalle:{
-
-        productoraEvento:{type: String, required: true },
-        descriptEvento:{type: String, required: true },
-        lugar:{type: String, lowercase: true, required: true },
-        auspiciadores:{type: [String], default: undefined}
-
-       }
-
-})
-
 userSchema.pre('save', async function(next){
     const usr = this
     if(!usr.isModified('password')) return next()
@@ -48,6 +33,5 @@ userSchema.methods.comparePass = async function(givenPass){
 }
 
 const userMong = mongoose.model('User', userSchema)
-const bandaConcertMong = mongoose.model('BandaEnConcierto', bandaConcertShema)
 
-module.exports = userMong, bandaConcertMong
+module.exports = userMong
