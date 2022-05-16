@@ -5,9 +5,8 @@ const cors = require('cors')
 require('dotenv').config()
 require('./bd/dbConect')
 
-const enablelist = ["http://localhost:3000"]
 const corsOpt = {
-    origin: enablelist,
+    origin: "http://localhost:3000",
     optionsSuccessStatus: 200
 }
 
@@ -22,7 +21,7 @@ app.get("/", (req, res) => {
 app.use(express.json())
 app.use(
     express.urlencoded({
-        extended:false,
+        extended:true,
     })
 )
 

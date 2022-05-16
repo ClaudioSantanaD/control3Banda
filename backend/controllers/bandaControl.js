@@ -1,6 +1,6 @@
 const bandaConcertMong = require('../bd/bandaModel.js')
 
-const findCityConcerts = async(res) =>{
+const findCityConcerts = async(req, res) =>{
     try{
 
         const cities = await bandaConcertMong.find().distinct("ciudad")
@@ -14,7 +14,7 @@ const findCityConcerts = async(res) =>{
 
 const findByCity = async(req, res) => {
     
-    console.log(req.body)
+    //console.log(req.body)
 
     const {ciudad} = req.body
     try{

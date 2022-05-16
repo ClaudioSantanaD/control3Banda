@@ -30,7 +30,7 @@ const registerUser = async (req, res) => {
         console.log(error)
     }
 
-    console.log(req.body)
+    //console.log(req.body)
 }
 
 const loginUser = async(req, res) => {
@@ -99,7 +99,7 @@ const addConcertToUser = async(req,res) => {
         res.json({message: "Concierto añadido a tus favoritos :)"})
 
     }catch(error){
-        //res.status(400).json(error)
+        res.status(400).json(error)
         console.log(error)
     }
 
