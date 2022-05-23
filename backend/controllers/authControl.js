@@ -50,11 +50,10 @@ const loginUser = async(req, res) => {
 
         const authToken = jwt.sign({
             username: user.username,
-            name: user.name,
-            id: user._id
+            name: user.name
         }, process.env.ACCESS_TOKEN_SEC)
 
-        res.header('auth-token', authToken).json({
+        res.json({
             message:"Login Exitoso",
             token: authToken
         })

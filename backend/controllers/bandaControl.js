@@ -16,7 +16,7 @@ const findByCity = async(req, res) => {
     
     //console.log(req.body)
 
-    const {ciudad} = req.body
+    let ciudad = req.params.ciudad
     try{
 
         const cityConcerts = await bandaConcertMong.find({ciudad:ciudad}).sort({fechaHora:0})
